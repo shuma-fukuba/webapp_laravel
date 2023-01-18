@@ -1,0 +1,58 @@
+version: "3"
+
+services:
+  db:
+    container_name: webapp_db_dev
+    build:
+      context: ./docker/db
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_USER=user
+      - MYSQL_DATABASE=webapp
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=password
+    volumes:
+      - webapp_db:/var/lib/mysql
+    platform: linux/x86_64
+    networks:
+      - posse_network
+  app:
+    container_name: webapp_app_dev
+    build:
+      context: ./docker/app
+    volumes:
+      - ./src:/work/backend
+    working_dir: /work/backend
+    depends_on: ["db"]
+    networks:
+      - posse_network
+    ports:
+      - 19444:8000
+  web:
+    container_name: webapp_web_dev
+    build:
+      context: ./docker/web
+    ports:
+      - 19344:80
+    volumes:
+      - ./src:/work/backend
+      - ./docker/web/etc/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+      - ./src/public:/var/www/html/laravel/public
+      - ./src/storage:/var/www/html/laravel/public/storage
+    working_dir: /work/backend
+    depends_on: ["app"]
+    networks:
+      - posse_network
+
+volumes:
+  webapp_db:
+
+networks:
+  default:
+    external:
+      name: bridge
+  posse_network:
+    name: posse_network
+    driver: bridge
+    external: true
