@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Language extends Model
 {
     use HasFactory;
+
+    protected $table = 'languages';
+    public function learning_times () {
+        return $this->belongsToMany('App\LearningTime')->withTimestamps();
+    }
 }

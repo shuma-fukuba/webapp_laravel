@@ -13,9 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('learning_contents', function (Blueprint $table) {
+        Schema::create('learning_content_learning_time', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
+            $table->unsignedBigInteger('learning_time_id');
+            $table->unsignedBigInteger('learning_content_id');
+
+            $table->foreign('learning_time_id')->references('id')->on('learning_times')->onDelete('cascade');
+            $table->foreign('learning_content_id')->references('id')->on('learning_contents')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -27,7 +31,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('learning_times_contents');
         Schema::dropIfExists('learning_contents');
+        Schema::dropIfExists('learning_content_learning_time');
     }
 };

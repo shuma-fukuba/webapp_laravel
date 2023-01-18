@@ -13,9 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('languages', function (Blueprint $table) {
+        Schema::create('language_learning_time', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('language');
+            $table->unsignedBigInteger('learning_time_id');
+            $table->unsignedBigInteger('language_id');
+
+            $table->foreign('learning_time_id')->references('id')->on('learning_times')->onDelete('cascade');
+            $table->foreign('language_id')->references('id')->on('languages')->onDelete('cascade');
+
             $table->timestamps();
         });
     }
@@ -27,7 +32,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('learning_times_languages');
         Schema::dropIfExists('languages');
+        Schema::dropIfExists('language_learning_time');
     }
 };
