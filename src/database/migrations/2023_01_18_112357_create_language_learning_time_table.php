@@ -32,7 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('languages');
         Schema::dropIfExists('language_learning_time');
     }
 };

@@ -22,5 +22,6 @@ class DatabaseSeeder extends Seeder
         // ]);
         $this->call(LanguagesSeeder::class);
         $this->call(LearningContentsSeeder::class);
+        $this->call(LearningTimesSeeder::class);
     }
 }

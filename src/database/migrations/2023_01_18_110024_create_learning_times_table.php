@@ -17,7 +17,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->integer('learning_time');
             $table->date('learning_time_date');
-            $table->unsignedBigInteger('user_id')->unsigned(); // 登録者ID // 紐付け
+            $table->string('user_id'); // 登録者ID // 紐付け
             $table->timestamps();
         });
     }
@@ -29,8 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('learning_times_contents');
-        Schema::dropIfExists('learning_times_languages');
         Schema::dropIfExists('learning_times');
     }
 };

@@ -31,7 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('learning_contents');
         Schema::dropIfExists('learning_content_learning_time');
     }
 };
