@@ -11,6 +11,6 @@ class Language extends Model
 
     protected $table = 'languages';
     public function learning_times () {
-        return $this->belongsToMany('App\LearningTime')->withTimestamps();
+        return $this->belongsToMany('App\Models\LearningTime')->withTimestamps();
     }
 }

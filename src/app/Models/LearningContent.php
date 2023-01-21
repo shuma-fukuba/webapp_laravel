@@ -12,6 +12,6 @@ class LearningContent extends Model
     protected $table = 'learning_contents';
     public function learning_times()
     {
-        return $this->belongsToMany('App\LearningTime')->withTimestamps();
+        return $this->belongsToMany('App\Models\LearningTime')->withTimestamps();
     }
 }
