@@ -19,4 +19,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/home', [HomeController::class, 'index']);
+Route::controller(HomeController::class)->prefix('home')->group(function () {
+    Route::get('/', 'index');
+    Route::post('/', 'create_learning_log');
+});
+
+Route::get('/curriculums', [HomeController::class, 'read_langs_contents']);
