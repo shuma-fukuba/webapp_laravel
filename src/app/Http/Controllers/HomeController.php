@@ -14,8 +14,48 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $user_id = $request->user_id;
+        return self::read_learning_log($user_id);
+    }
 
-        // 今日の学習時間
+    public function read_langs_contents(Request $request)
+    {
+        $languages = Language::all();
+        $contents = LearningContent::all();
+        return json_encode(
+            compact('languages', 'contents'),
+            JSON_UNESCAPED_UNICODE
+        );
+    }
+
+    public function create_learning_log(Request $request)
+    {
+        $date = $request->date;
+        $time = $request->learning_time;
+        $user_id = $request->user_id;
+        $languages = array_map('intval', explode(',', $request->languages));
+        $contents = array_map('intval', explode(',',  $request->contents));
+
+        $learning_time = new LearningTime;
+        $learning_time->learning_time = $time;
+        $learning_time->learning_time_date = $date;
+        $learning_time->user_id = $user_id;
+
+        $learning_time->save();
+
+        // dd($learning_time);
+        foreach ($languages as $language) {
+            $learning_time->languages()->attach($language);
+        }
+
+        foreach ($contents as $content) {
+            $learning_time->learning_contents()->attach($content);
+        }
+
+        return  self::read_learning_log($user_id);
+    }
+
+    private function read_learning_log(string $user_id)
+    { // 今日の学習時間
         $today = Carbon::today();
         $today_time = LearningTime::whereDate('learning_time_date', $today)
             ->where('user_id', '=', $user_id)
@@ -69,42 +109,5 @@ class HomeController extends Controller
             ),
             JSON_UNESCAPED_UNICODE
         );
-    }
-
-    public function read_langs_contents(Request $request)
-    {
-        $languages = Language::all();
-        $contents = LearningContent::all();
-        return json_encode(
-            compact('languages', 'contents'),
-            JSON_UNESCAPED_UNICODE
-        );
-    }
-
-    public function create_learning_log(Request $request)
-    {
-        $date = $request->date;
-        $time = $request->learning_time;
-        $user_id = $request->user_id;
-        $languages = array_map('intval', explode(',', $request->languages));
-        $contents = array_map('intval', explode(',',  $request->contents));
-
-        $learning_time = new LearningTime;
-        $learning_time->learning_time = $time;
-        $learning_time->learning_time_date = $date;
-        $learning_time->user_id = $user_id;
-
-        $learning_time->save();
-
-        // dd($learning_time);
-        foreach ($languages as $language) {
-            $learning_time->languages()->attach($language);
-        }
-
-        foreach ($contents as $content) {
-            $learning_time->learning_contents()->attach($content);
-        }
-
-        return $learning_time;
     }
 }
