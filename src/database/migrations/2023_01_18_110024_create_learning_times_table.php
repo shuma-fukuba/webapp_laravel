@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('learning_times', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->bigIncrements('learning_time_id');
             $table->integer('learning_time');
             $table->date('learning_time_date');
             $table->string('user_id'); // 登録者ID // 紐付け

@@ -31,12 +31,12 @@ class LearningTimesSeeder extends Seeder
             ) {
                 $rand = rand(1, $languages_length);
                 $learning_time->languages()->attach(
-                    $languages->random($rand)->pluck('id')->toArray(),
+                    $languages->random($rand)->pluck('language_id')->toArray(),
                 );
 
                 $rand = rand(1, $contents_length);
                 $learning_time->learning_contents()->attach(
-                    $learning_contents->random($rand)->pluck('id')->toArray(),
+                    $learning_contents->random($rand)->pluck('learning_content_id')->toArray(),
                 );
             });
     }
